@@ -1,43 +1,32 @@
 //CRUD OPERATIONS
-const mongodb = require('mongodb')
-const MongoClient = mongodb.MongoClient
-
+const {MongoClient,ObjectID} = require('mongodb')
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-app'
+
+
 
 MongoClient.connect(connectionURL,{useNewUrlParser:true},(error,client)=>{
     if(error){
         return console.log('Unable to connect to database!')
     }
-  const db =  client.db(databaseName)
-//   db.collection('users').insertMany([
-//     {
-//         name:'Mukesh',
-//         age:32
-//     },
-//     {
-//         name:'Vishal',
-//         age:45
-//     }
-
-// ],(error,result)=>{
-//     if(error){
-//         console.log('Unable to insert')
-//     }
-// }) 
-    db.collection('tasks').insertMany([
-        {
-            description:'Do homework',
-            boolean:true
-        },
-        {
-            description:'Clean Room',
-            boolean:true
+   const db =  client.db(databaseName)
+//     db.collection('users').updateOne({_id:new ObjectID('5d79affb1efbd11420724bfc')},{
+//       $inc:{
+//          age:1
+//       }
+//   }).then((result)=>{
+//       console.log(result)
+//   }).catch((error)=>{
+//       console.log(error)
+//   })
+    db.collection('tasks').updateMany({completed:true},{
+        $set:{
+            completed:false
         }
-    ],(error,result)=>{
-        if(error){
-            console.log('Unable to insert')
-        }
-        console.log(result.ops)
+    }).then((result)=>{
+        console.log(result)
+    }).catch((error)=>{
+        console.log(error)
     })
 })
+
